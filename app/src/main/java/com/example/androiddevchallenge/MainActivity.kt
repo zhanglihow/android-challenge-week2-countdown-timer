@@ -16,23 +16,67 @@
 package com.example.androiddevchallenge
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
 class MainActivity : AppCompatActivity() {
+
+    var start = 10
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val time = mutableStateOf(start.toString())
+
         setContent {
-            MyTheme {
-                MyApp()
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = time.value,
+                    modifier = Modifier.padding(top = 20.dp),
+                    fontWeight = FontWeight.Bold
+                )
+                Button(
+                    onClick = { start(time) },
+                    modifier = Modifier.padding(top = 20.dp)
+                ) {
+                    Text(text = "START")
+                }
             }
         }
+    }
+
+    private fun start(time: MutableState<String>) {
+
+        object : CountDownTimer(10 * 1000L, 1000L) {
+            override fun onTick(millisUntilFinished: Long) {
+                start -= 1
+                time.value = (start).toString()
+            }
+
+            override fun onFinish() {
+                time.value = "Finish"
+            }
+        }.start()
     }
 }
 
