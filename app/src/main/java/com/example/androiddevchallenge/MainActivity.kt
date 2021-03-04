@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun start(time: MutableState<String>) {
+        start=10
 
         object : CountDownTimer(10 * 1000L, 1000L) {
             override fun onTick(millisUntilFinished: Long) {
